@@ -15,7 +15,11 @@ type OrdersGrpcHandler struct {
 }
 
 func NewGrpcService(orpc *grpc.Server, ordersService types.OrderService) {
-	gRPCHandler := &OrdersGrpcHandler{}
+	gRPCHandler := &OrdersGrpcHandler{
+		ordersService: ordersService,
+	}
+
+	orders.RegisterOrderServiceServer(grpc, gRPCHandler)
 }
 
 func (h *OrdersGrpcHandler) CreateOrder(ctx context.Context, req *orders.CreateOrderRequest) (*orders.CreateOrderResponse, error) {
